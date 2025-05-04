@@ -54,6 +54,20 @@ def driver():
     yield driver
     driver.quit()
 
+@allure.feature("Temperature Comparison")
+@allure.story("Adaptive website scraping")
+def test_resilient_scraping(api, driver, city="London"):
+    try:
+        driver.get(city_to_url[city])
+        temp_element = driver.find_element(By.CLASS_NAME, "h2")
+        temp = float(temp_element.text.replace("°C", "").strip())
+        logging.info(f"{city} website temperature: {temp}")
+    except NoSuchElementException:
+        logging.warning(f"Temperature element not found for {city}")
+        temp = None
+
+    assert temp is not None, f"{city}: Failed to extract temperature from site"
+
 @allure.feature("Weather Data Insertion")
 @allure.story("Insert API weather data into DB")
 @pytest.mark.parametrize("city", cities)
@@ -135,20 +149,6 @@ def test_compare_api_vs_website_temperature(api, driver, city):
         discrepancy = abs(api_temp - web_temp)
         logging.info(f"{city} discrepancy: {discrepancy:.2f}°C")
         assert discrepancy < 5.0, f"{city} temperature discrepancy too high: {discrepancy:.2f}°C"
-
-@allure.feature("Temperature Comparison")
-@allure.story("Adaptive website scraping")
-def test_resilient_scraping(api, driver, city="London"):
-    try:
-        driver.get(city_to_url[city])
-        temp_element = driver.find_element(By.CLASS_NAME, "h2")
-        temp = float(temp_element.text.replace("°C", "").strip())
-        logging.info(f"{city} website temperature: {temp}")
-    except NoSuchElementException:
-        logging.warning(f"Temperature element not found for {city}")
-        temp = None
-
-    assert temp is not None, f"{city}: Failed to extract temperature from site"
 
 @allure.feature("Historical Weather")
 @allure.story("Store weather snapshot in history table")

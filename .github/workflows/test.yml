@@ -21,8 +21,24 @@ jobs:
       - name: Run Docker Compose Tests
         run: docker-compose up --build --abort-on-container-exit
 
-      - name: Upload Allure Results
-        uses: actions/upload-artifact@v4
+      - name: Install Java (for Allure CLI)
+        uses: actions/setup-java@v3
         with:
-          name: allure-results
-          path: ./allure-results
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Allure CLI
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.27.0.tgz
+          tar -zxvf allure-2.27.0.tgz
+          sudo mv allure-2.27.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+
+      - name: Generate Allure Report
+        run: allure generate ./allure-results --clean -o ./allure-report
+
+      - name: Deploy Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report

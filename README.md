@@ -59,6 +59,7 @@ automation_framework/
 
 | Test Name                               | Purpose |
 |----------------------------------------|---------|
+| `test_resilient_scraping` | Temperature Comparison |
 | `test_get_weather_data_and_insert_into_db` | Get current weather from API and insert into DB |
 | `test_weather_by_city_id`              | Use city ID to fetch weather and validate DB |
 | `test_compare_api_vs_website_temperature` | Compare scraped vs API temperature values |
@@ -170,20 +171,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## 📋 Quick Reference
 
-| Action                               | Command |
-|--------------------------------------|---------|
-| **Clone the repo**                   | `git clone https://github.com/shlomi10/fastapi-order-management.git` |
-| **Create virtual environment**       | `python -m venv venv` |
-| **Activate environment (Windows)**   | `venv\Scripts\activate` |
-| **Activate environment (Linux/Mac)** | `source venv/bin/activate` |
-| **Install dependencies**             | `pip install -r requirements.txt` |
-| **Start all services**               | `docker-compose up --build` |
-| **Swagger**                          | `http://127.0.0.1:8000/docs#/` |
-| **Stop services**                    | `docker-compose down` |
-| **Run tests**                        | `pytest tests/ --alluredir=allure-results` |
-| **Serve Allure report**              | `allure serve allure-results` |
+| Action                               | Command                                                |
+|--------------------------------------|--------------------------------------------------------|
+| **Clone the repo**                   | `git clone https://github.com/shlomi10/pango.git`      |
+| **Create virtual environment**       | `python -m venv venv`                                  |
+| **Activate environment (Windows)**   | `venv\Scripts\activate`                                |
+| **Activate environment (Linux/Mac)** | `source venv/bin/activate`                             |
+| **Install dependencies**             | `pip install -r requirements.txt`                      |
+| **Start all services**               | `docker-compose up --build`                            |
+| **Stop services**                    | `docker-compose down`                                  |
+| **Run tests**                        | `pytest tests/ --alluredir=allure-results`             |
+| **Serve Allure report**              | `allure serve allure-results`                          |
 | **View published reports**           | `https://shlomi10.github.io/fastapi-order-management/` |
-| **Pull Docker image**                | `docker pull shlomi10/fastapi-order-management:latest` |
+| **Pull Docker image**                | `docker pull shlomi10/pango:latest`                    |
 
 💡 Built for weather validation automation — fast, reproducible, and scalable.
 
