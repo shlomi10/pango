@@ -39,9 +39,10 @@ jobs:
 
       - name: Generate Allure Report
         run: |
-            rm -rf ./allure-report
-            mkdir -p ./allure-report
-            allure generate ./allure-results --clean -o ./allure-report
+          sudo chown -R $USER:$USER ./allure-report || true
+          rm -rf ./allure-report
+          mkdir -p ./allure-report
+          allure generate ./allure-results --clean -o ./allure-report
 
       - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
