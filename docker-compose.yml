@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   weather-tests:
     build: .
@@ -18,7 +20,8 @@ services:
     ports:
       - "5050:5050"
     volumes:
-      - ./allure-results:/app/allure-results
+      - ./allure-results:/app/allure-docker-api/static/projects/default/results
+      - ./allure-report:/app/allure-docker-api/static/projects/default/reports
     environment:
       CHECK_RESULTS_EVERY_SECONDS: 3
       KEEP_HISTORY: 1
