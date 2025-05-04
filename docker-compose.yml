@@ -1,0 +1,31 @@
+services:
+  weather-tests:
+    build: .
+    container_name: weather-test-container
+    volumes:
+      - .:/app
+      - ./allure-results:/app/allure-results
+    environment:
+      - CHROME_BIN=/usr/bin/google-chrome
+      - DISPLAY=:99
+    command: ["xvfb-run", "pytest", "--alluredir=allure-results"]
+    networks:
+      - weather-net
+
+  allure-ui:
+    image: frankescobar/allure-docker-service
+    container_name: allure-ui
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./allure-results:/app/allure-results
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 3
+      KEEP_HISTORY: 1
+      ENABLE_EXECUTOR_INFO: 0
+    networks:
+      - weather-net
+
+networks:
+  weather-net:
+    driver: bridge
