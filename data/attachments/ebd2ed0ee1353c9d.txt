@@ -1,0 +1,1 @@
+WARNING  selenium.webdriver.common.selenium_manager:selenium_manager.py:138 Exception managing chrome: Unable to discover proper chromedriver version in offline mode

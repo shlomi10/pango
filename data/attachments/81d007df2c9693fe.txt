@@ -1,0 +1,1 @@
+Paris - API Temp: 12.43°C, Website Temp: 11.11°C

@@ -1,0 +1,7 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"","Weather Data Insertion","Insert weather data by City ID into DB","0","0","5","0","0"
+"","Weather Reports","Get city with highest average temperature","0","0","1","0","0"
+"","Temperature Comparison","Compare API vs Website temperature","0","0","5","0","0"
+"","Weather Data Insertion","Insert API weather data into DB","0","0","5","0","0"
+"","Historical Weather","Store weather snapshot in history table","0","0","1","0","0"
+"","Temperature Comparison","Adaptive website scraping","0","0","1","0","0"
