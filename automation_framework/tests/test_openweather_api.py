@@ -60,7 +60,12 @@ def test_resilient_scraping(api, driver, city="London"):
     try:
         driver.get(city_to_url[city])
         temp_element = driver.find_element(By.CLASS_NAME, "h2")
-        temp = float(temp_element.text.replace("°C", "").strip())
+        web_temp_text = temp_element.text.strip()
+        if "°F" in web_temp_text:
+            temp_f = float(web_temp_text.replace("°F", "").strip())
+            temp = (temp_f - 32) * 5 / 9
+        else:
+            temp = float(web_temp_text.replace("°C", "").strip())
         logging.info(f"{city} website temperature: {temp}")
     except NoSuchElementException:
         logging.warning(f"Temperature element not found for {city}")
@@ -133,8 +138,12 @@ def test_compare_api_vs_website_temperature(api, driver, city):
         url = city_to_url[city]
         driver.get(url)
         temp_element = driver.find_element(By.CLASS_NAME, "h2")
-        web_temp_text = temp_element.text.strip().replace("°C", "").strip()
-        web_temp = float(web_temp_text)
+        web_temp_text = temp_element.text.strip()
+        if "°F" in web_temp_text:
+            temp_f = float(web_temp_text.replace("°F", "").strip())
+            web_temp = (temp_f - 32) * 5 / 9
+        else:
+            web_temp = float(web_temp_text.replace("°C", "").strip())
 
     with allure.step("Log temperatures and compare"):
         logging.info(f"{city} - API: {api_temp:.2f}°C, Website: {web_temp:.2f}°C")
