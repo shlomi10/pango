@@ -23,6 +23,7 @@ services:
       CHECK_RESULTS_EVERY_SECONDS: 3
       KEEP_HISTORY: 1
       ENABLE_EXECUTOR_INFO: 0
+    user: root
     networks:
       - weather-net
 
