@@ -39,6 +39,7 @@ jobs:
 
       - name: Generate Allure Report
         run: |
+          export ALLURE_BASE_PATH=/pango
           sudo chown -R $USER:$USER ./allure-report || true
           rm -rf ./allure-report
           mkdir -p ./allure-report
