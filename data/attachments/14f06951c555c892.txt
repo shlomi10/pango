@@ -1,2 +1,0 @@
-
-City with the highest average temperature: Berlin (140.83°C)
