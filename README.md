@@ -62,8 +62,8 @@ automation_framework/
 | `test_resilient_scraping` | Temperature Comparison |
 | `test_get_weather_data_and_insert_into_db` | Get current weather from API and insert into DB |
 | `test_weather_by_city_id`              | Use city ID to fetch weather and validate DB |
-| `test_compare_api_vs_website_temperature` | Compare scraped vs API temperature values |
 | `test_print_city_with_highest_avg_temp` | Output the city with the highest avg temp |
+| `test_compare_api_vs_website_temperature` | Compare scraped vs API temperature values |
 | `test_store_historical_weather_data`   | Log temperature snapshots in history table |
 
 ---
