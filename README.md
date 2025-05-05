@@ -2,17 +2,19 @@
 
 <div align="center">
 
-**[Python 3.12](https://www.python.org/)** &nbsp;|&nbsp;
-**[Pytest](https://docs.pytest.org/en/stable/)** &nbsp;|&nbsp;
-**[Selenium](https://www.selenium.dev/)** &nbsp;|&nbsp;
-**[Allure Reports](https://docs.qameta.io/allure/)** &nbsp;|&nbsp;
-**[Docker Compose](https://docs.docker.com/compose/)**
 
+
+<div align="center">
+
+[![Selenium](https://img.shields.io/badge/Selenium-Automation_Tool-brightgreen.svg?style=for-the-badge&logo=selenium)](https://www.selenium.dev/)
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
 [![Pytest](https://img.shields.io/badge/Pytest-Test_Framework-green.svg?style=for-the-badge&logo=pytest)](https://docs.pytest.org/)
 [![Allure](https://img.shields.io/badge/Allure-Reports-orange.svg?style=for-the-badge&logo=allure)](https://docs.qameta.io/allure/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg?style=for-the-badge&logo=docker)](https://docs.docker.com/compose/)
-[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI/CD-blue?style=for-the-badge&logo=github-actions)](https://github.com/)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/shlomi10/pango/test.yml?label=CI%20Build&style=for-the-badge&logo=github-actions)](https://github.com/shlomi10/pango/actions)
+[![Allure Report](https://img.shields.io/badge/Allure%20Report-View%20Live-purple?style=for-the-badge&logo=github)](https://shlomi10.github.io/pango/)
+
+</div>
 
 </div>
 
