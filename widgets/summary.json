@@ -1,1 +1,1 @@
-{"reportName":"default","testRuns":[],"statistic":{"failed":0,"broken":0,"skipped":0,"passed":18,"unknown":0,"total":18},"time":{"start":1746422573643,"stop":1746422580165,"duration":6522,"minDuration":1,"maxDuration":837,"sumDuration":4878}}
+{"reportName":"default","testRuns":[],"statistic":{"failed":0,"broken":0,"skipped":0,"passed":18,"unknown":0,"total":18},"time":{"start":1746429357215,"stop":1746429363735,"duration":6520,"minDuration":0,"maxDuration":754,"sumDuration":4813}}
