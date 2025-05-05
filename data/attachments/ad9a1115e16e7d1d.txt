@@ -1,3 +1,3 @@
 Requesting URL: https://api.openweathermap.org/data/2.5/weather?q=Berlin&appid=f88d54cd8eddb5d1f23ff82a80b95fec
 
-Berlin - API Temp: 7.400000000000034°C, Website Temp: 7.222222222222222°C
+Berlin - API Temp: 13.170000000000016°C, Website Temp: 11.11111111111111°C
