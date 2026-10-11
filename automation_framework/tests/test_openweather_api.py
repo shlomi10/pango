@@ -1,14 +1,26 @@
+import re
 import pytest
 import allure
 import logging
 
-from selenium.common import NoSuchElementException
-
 from automation_framework.utilities.api_helpers import ApiHelper
 from automation_framework.utilities.db_helpers import DatabaseHelper
 from selenium import webdriver
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+
+_TEMPERATURE = re.compile(r"(-?\d+(?:\.\d+)?)\s*°\s*([CF])")
+_TEMPERATURE_SELECTORS = (
+    "#qlook .h2",
+    "#qlook .h1",
+    ".bk-focus__qlook .h2",
+    ".bk-focus__qlook .h1",
+    ".h2",
+    ".h1",
+)
+_SUMMARY_SELECTORS = ("#qlook", ".bk-focus__qlook", ".bk-focus")
 
 logging.basicConfig(filename="test_log.log", level=logging.INFO, format="%(asctime)s - %(message)s")
 
@@ -29,6 +41,35 @@ city_to_url = {
     "Paris": "https://www.timeanddate.com/weather/france/paris",
     "Berlin": "https://www.timeanddate.com/weather/germany/berlin",
 }
+
+def _to_celsius(match):
+    degrees = float(match.group(1))
+    if match.group(2) == "F":
+        return (degrees - 32) * 5 / 9
+    return degrees
+
+def website_temperature_celsius(driver, url):
+    driver.get(url)
+    try:
+        WebDriverWait(driver, 15).until(
+            lambda browser: browser.find_elements(By.CSS_SELECTOR, "#qlook, .bk-focus, .h1, .h2")
+        )
+    except TimeoutException:
+        return None
+
+    for selector in _TEMPERATURE_SELECTORS:
+        for element in driver.find_elements(By.CSS_SELECTOR, selector):
+            match = _TEMPERATURE.search(element.text)
+            if match:
+                return _to_celsius(match)
+
+    for selector in _SUMMARY_SELECTORS:
+        for element in driver.find_elements(By.CSS_SELECTOR, selector):
+            match = _TEMPERATURE.search(element.text)
+            if match:
+                return _to_celsius(match)
+
+    return None
 
 @pytest.fixture(scope="module")
 def api():
@@ -57,19 +98,11 @@ def driver():
 @allure.feature("Temperature Comparison")
 @allure.story("Adaptive website scraping")
 def test_resilient_scraping(api, driver, city="London"):
-    try:
-        driver.get(city_to_url[city])
-        temp_element = driver.find_element(By.CLASS_NAME, "h2")
-        web_temp_text = temp_element.text.strip()
-        if "°F" in web_temp_text:
-            temp_f = float(web_temp_text.replace("°F", "").strip())
-            temp = (temp_f - 32) * 5 / 9
-        else:
-            temp = float(web_temp_text.replace("°C", "").strip())
-        logging.info(f"{city} website temperature: {temp}")
-    except NoSuchElementException:
+    temp = website_temperature_celsius(driver, city_to_url[city])
+    if temp is None:
         logging.warning(f"Temperature element not found for {city}")
-        temp = None
+    else:
+        logging.info(f"{city} website temperature: {temp}")
 
     assert temp is not None, f"{city}: Failed to extract temperature from site"
 
@@ -135,15 +168,8 @@ def test_compare_api_vs_website_temperature(api, driver, city):
         api_temp = api_data["main"]["temp"] - 273.15
 
     with allure.step(f"Open weather page for {city}"):
-        url = city_to_url[city]
-        driver.get(url)
-        temp_element = driver.find_element(By.CLASS_NAME, "h2")
-        web_temp_text = temp_element.text.strip()
-        if "°F" in web_temp_text:
-            temp_f = float(web_temp_text.replace("°F", "").strip())
-            web_temp = (temp_f - 32) * 5 / 9
-        else:
-            web_temp = float(web_temp_text.replace("°C", "").strip())
+        web_temp = website_temperature_celsius(driver, city_to_url[city])
+        assert web_temp is not None, f"{city}: Failed to extract temperature from site"
 
     with allure.step("Log temperatures and compare"):
         logging.info(f"{city} - API: {api_temp:.2f}°C, Website: {web_temp:.2f}°C")
