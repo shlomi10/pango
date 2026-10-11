@@ -11,16 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
-_TEMPERATURE = re.compile(r"(-?\d+(?:\.\d+)?)\s*°\s*([CF])")
-_TEMPERATURE_SELECTORS = (
-    "#qlook .h2",
-    "#qlook .h1",
-    ".bk-focus__qlook .h2",
-    ".bk-focus__qlook .h1",
-    ".h2",
-    ".h1",
-)
-_SUMMARY_SELECTORS = ("#qlook", ".bk-focus__qlook", ".bk-focus")
+_TEMPERATURE = re.compile(r"(-?\d+(?:\.\d+)?)\s*(?:°|º|&deg;|&#176;)\s*([CFcf])")
 
 logging.basicConfig(filename="test_log.log", level=logging.INFO, format="%(asctime)s - %(message)s")
 
@@ -44,32 +35,33 @@ city_to_url = {
 
 def _to_celsius(match):
     degrees = float(match.group(1))
-    if match.group(2) == "F":
+    if match.group(2).upper() == "F":
         return (degrees - 32) * 5 / 9
     return degrees
+
+def _page_temperature(driver):
+    body_text = driver.find_element(By.TAG_NAME, "body").text
+    match = _TEMPERATURE.search(body_text) or _TEMPERATURE.search(driver.page_source)
+    return match, body_text
 
 def website_temperature_celsius(driver, url):
     driver.get(url)
     try:
-        WebDriverWait(driver, 15).until(
-            lambda browser: browser.find_elements(By.CSS_SELECTOR, "#qlook, .bk-focus, .h1, .h2")
-        )
+        WebDriverWait(driver, 15).until(lambda browser: _page_temperature(browser)[0])
     except TimeoutException:
+        _, body_text = _page_temperature(driver)
+        logging.warning(
+            "Temperature element not found for %s title=%r text=%r",
+            url,
+            driver.title,
+            body_text[:400],
+        )
         return None
 
-    for selector in _TEMPERATURE_SELECTORS:
-        for element in driver.find_elements(By.CSS_SELECTOR, selector):
-            match = _TEMPERATURE.search(element.text)
-            if match:
-                return _to_celsius(match)
-
-    for selector in _SUMMARY_SELECTORS:
-        for element in driver.find_elements(By.CSS_SELECTOR, selector):
-            match = _TEMPERATURE.search(element.text)
-            if match:
-                return _to_celsius(match)
-
-    return None
+    match, _ = _page_temperature(driver)
+    if match is None:
+        return None
+    return _to_celsius(match)
 
 @pytest.fixture(scope="module")
 def api():
@@ -91,6 +83,9 @@ def driver():
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument(
+        "--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    )
     driver = webdriver.Chrome(options=chrome_options)
     yield driver
     driver.quit()
