@@ -7,7 +7,7 @@
 <div align="center">
 
 [![Selenium](https://img.shields.io/badge/Selenium-Automation_Tool-brightgreen.svg?style=for-the-badge&logo=selenium)](https://www.selenium.dev/)
-[![Python](https://img.shields.io/badge/Python-3.12-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.15-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
 [![Pytest](https://img.shields.io/badge/Pytest-Test_Framework-green.svg?style=for-the-badge&logo=pytest)](https://docs.pytest.org/)
 [![Allure](https://img.shields.io/badge/Allure-Reports-orange.svg?style=for-the-badge&logo=allure)](https://docs.qameta.io/allure/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg?style=for-the-badge&logo=docker)](https://docs.docker.com/compose/)
@@ -159,7 +159,7 @@ jobs:
 
 ## 📜 License
 
-Copyright (c) 2024
+Copyright (c) 2026
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
